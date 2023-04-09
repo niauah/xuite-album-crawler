@@ -4,6 +4,7 @@ from selenium.common.exceptions import StaleElementReferenceException, NoSuchEle
 
 import re
 import os
+from urllib.request import urlretrieve
 
 
 def main():
@@ -59,7 +60,9 @@ def read_single_image(driver, image_url, base_dir):
 
 	image_title = driver.find_element(By.CLASS_NAME, 'title').text
 	text_title = image_title.replace('jpg', 'txt')
-	# TODO: download the image
+
+	image_src = driver.find_element(By.CLASS_NAME, 'single-show-image').get_attribute('src')
+	urlretrieve(image_src, os.path.join(base_dir, image_title))
 	try:
 		single_description = driver.find_element(By.CLASS_NAME, 'desc').text
 	except NoSuchElementException as e:
