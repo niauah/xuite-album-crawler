@@ -3,9 +3,11 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import StaleElementReferenceException, NoSuchElementException
 
 import re
+import os
 
 
 def main():
+	result_dir = 'Results'
 	driver = webdriver.Firefox()
 	driver.get("https://m.xuite.net/photo/zooz103")
 	more_button = driver.find_element(By.CLASS_NAME, 'albumlist-more')
@@ -39,15 +41,20 @@ def main():
 		)
 
 	print(albums_list)
+
+	os.mkdir(result_dir)
+	os.chdir(result_dir)
 	for album in albums_list[:2]:
+		base_dir = album['title']
+		os.mkdir(base_dir)
 		print(f"Reading contents of {album['title']}...")
 		for image_index in range(1, album['count']+1):
-			read_single_image(driver, f"{album['link']}/{image_index}")
+			read_single_image(driver, f"{album['link']}/{image_index}", base_dir)
 
 	driver.close()
 
 
-def read_single_image(driver, image_url):
+def read_single_image(driver, image_url, base_dir):
 	driver.get(image_url)
 
 	image_title = driver.find_element(By.CLASS_NAME, 'title').text
@@ -59,7 +66,7 @@ def read_single_image(driver, image_url):
 		print(f'No description found, skipping the image {image_title}')
 		return
 	print(f'Retrieving data of {image_title}')
-	with open(text_title, 'w') as file:
+	with open(os.path.join(base_dir, text_title), 'w') as file:
 		file.write(single_description)
 
 if __name__ == '__main__':
