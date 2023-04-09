@@ -43,10 +43,13 @@ def main():
 
 	print(albums_list)
 
-	os.mkdir(result_dir)
+	os.makedirs(result_dir, exist_ok=True)
 	os.chdir(result_dir)
-	for album in albums_list[:2]:
+	existing_dirs = os.listdir()
+	for album in albums_list:
 		base_dir = album['title']
+		if base_dir in existing_dirs:
+			continue
 		os.mkdir(base_dir)
 		print(f"Reading contents of {album['title']}...")
 		for image_index in range(1, album['count']+1):
