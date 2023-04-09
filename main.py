@@ -61,7 +61,7 @@ def main():
 def read_single_image(driver, image_url, base_dir):
 	driver.get(image_url)
 
-	image_title = driver.find_element(By.CLASS_NAME, 'title').text
+	image_title = driver.find_element(By.CLASS_NAME, 'title').text.replace('JPG', 'jpg')
 	text_title = image_title.replace('jpg', 'txt')
 
 	image_src = driver.find_element(By.CLASS_NAME, 'single-show-image').get_attribute('src')
