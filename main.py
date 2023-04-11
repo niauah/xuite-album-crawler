@@ -27,8 +27,6 @@ def main():
 	albums_list = []
 	for element in album_elements:
 		photo_name_element = element.find_element(By.CLASS_NAME, 'albumlist-photo-name')
-		if '專輯歌錄' not in photo_name_element.text:
-			continue
 		photo_count = re.match(
 				r'共([\d]+)張',
 				element.find_element(By.TAG_NAME, 'p').text
