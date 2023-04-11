@@ -7,12 +7,14 @@ from selenium.common.exceptions import (
 import re
 import os
 from urllib.request import urlretrieve
+import argparse
 
 
-def main():
+
+def main(userid):
 	result_dir = 'Results'
 	driver = webdriver.Firefox()
-	driver.get("https://m.xuite.net/photo/zooz103")
+	driver.get(f"https://m.xuite.net/photo/{userid}")
 	more_button = driver.find_element(By.CLASS_NAME, 'albumlist-more')
 
 	while True:
@@ -82,4 +84,7 @@ def read_single_image(driver, image_url, base_dir):
 		file.write(single_description)
 
 if __name__ == '__main__':
-	main()
+	parser = argparse.ArgumentParser()
+	parser.add_argument('userid')
+	args = parser.parse_args()
+	main(args.userid)
