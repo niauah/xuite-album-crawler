@@ -53,7 +53,13 @@ def main():
 		os.mkdir(base_dir)
 		print(f"Reading contents of {album['title']}...")
 		for image_index in range(1, album['count']+1):
-			read_single_image(driver, f"{album['link']}/{image_index}", base_dir)
+			for i in range(3):
+				try:
+					read_single_image(driver, f"{album['link']}/{image_index}", base_dir)
+				except InvalidSessionIdException:
+					continue
+				else:
+					break
 
 	driver.close()
 
